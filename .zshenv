@@ -29,5 +29,5 @@ compinit
 
 prompt='%1~%% '
 
-. .alias
+. .bash_aliases
 
