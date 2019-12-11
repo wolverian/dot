@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-export LANG=en_US.UTF-8
+export LANG=C.UTF-8
 export EDITOR='code-insiders --wait'
 
 path=(
@@ -29,15 +29,5 @@ compinit
 
 prompt='%1~%% '
 
-alias g=git
-alias gc='git commit -v'
-alias gd='git diff'
-alias gp='git push'
-alias gs='git status -sb'
-alias ga='git add'
-alias gl='git log --oneline --decorate --graph'
-alias gw='git switch'
-alias gb='git branch -v'
-alias gr='git restore'
-alias gu='git pull --rebase'
+. .alias
 
