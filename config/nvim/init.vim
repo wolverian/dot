@@ -16,4 +16,6 @@ set cmdheight=2
 set updatetime=300
 set shortmess+=c
 
+colorscheme gruvbox
+
 nnoremap <silent> K :call <SID>show_documentation()<CR>
