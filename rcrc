@@ -1,0 +1,1 @@
+COPY_ALWAYS="config/fish/fish_variables"
