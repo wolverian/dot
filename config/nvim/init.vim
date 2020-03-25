@@ -2,11 +2,17 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'dag/vim-fish'
-Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
-Plug 'sdiehl/vim-ormolu'
-Plug 'morhetz/gruvbox'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
+
+" Haskell
+
+Plug 'sdiehl/vim-ormolu'
+Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
+
+" Colorschemes
+
+Plug 'morhetz/gruvbox'
 
 call plug#end()
 
@@ -16,6 +22,21 @@ set cmdheight=2
 set updatetime=300
 set shortmess+=c
 
-colorscheme gruvbox
+autocmd User CocJumpPlaceholder call
+      \ CocActionAsync('showSignatureHelp')
+
+" Mappings
 
 nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+let mapleader = ","
+
+nmap <leader>f :GFiles<CR>
