@@ -40,3 +40,6 @@ endfunction
 let mapleader = ","
 
 nmap <leader>f :GFiles<CR>
+nmap <leader><leader> :b#<cr>
+nmap <leader>v <c-w>v<c-w>l:b#<cr>
+nmap <leader>t :terminal<cr>
