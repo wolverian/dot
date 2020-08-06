@@ -60,6 +60,9 @@ Plug 'vim-syntastic/syntastic'
 
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'blerins/flattown'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'junegunn/vim-easy-align'
 
 " }}}
 
@@ -76,6 +79,7 @@ set et sw=2 ts=2
 set cmdheight=2
 set updatetime=300
 set shortmess+=c
+set laststatus=0
 
 " }}}
 
