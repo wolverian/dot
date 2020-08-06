@@ -1,5 +1,7 @@
 " neovim configuration
 
+" vi:foldmethod=marker
+
 " Leader {{{
 
 let mapleader = ","
@@ -15,7 +17,14 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-" TODO: Add coc plugins here.
+let g:coc_global_extensions = [
+      \ 'coc-marketplace',
+      \ 'coc-rust-analyzer',
+      \ 'coc-actions',
+      \ 'coc-tsserver',
+      \ 'coc-fish',
+      \ 'coc-yaml',
+      \ ]
 
 " }}}
 
@@ -81,9 +90,6 @@ nmap <leader>t :terminal<cr>
 
 " coc.vim Configuration {{{
 
-autocmd User CocJumpPlaceholder call
-      \ CocActionAsync('showSignatureHelp')
-
 " Mappings {{{
 
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -135,6 +141,13 @@ nmap <leader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
 nmap <leader>qf  <Plug>(coc-fix-current)
 
+" Remap for do codeAction of selected region
+function! s:cocActionsOpenFromSelected(type) abort
+  execute 'CocCommand actions.open ' . a:type
+endfunction
+xmap <silent> <leader>a :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
+nmap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
+
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
 
@@ -143,6 +156,10 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 " Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Run things
+
+autocmd FileType rust nmap <leader>R :CocCommand rust-analyzer.run<cr>
 
 " }}}
 
@@ -163,6 +180,15 @@ omap ac <Plug>(coc-classobj-a)
 " Requires 'textDocument/selectionRange' support of LS, ex: coc-tsserver
 nmap <silent> <C-s> <Plug>(coc-range-select)
 xmap <silent> <C-s> <Plug>(coc-range-select)
+
+" }}}
+
+" Miscellaneous {{{
+
+autocmd User CocJumpPlaceholder call
+      \ CocActionAsync('showSignatureHelp')
+
+autocmd BufWritePre,FileWritePre *.rs Format
 
 " }}}
 
