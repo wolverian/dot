@@ -5,7 +5,7 @@
 " Leader {{{
 
 let mapleader = ","
-let localmapleader = ";"
+let maplocalleader = ";"
 
 " }}}
 
