@@ -19,11 +19,12 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 let g:coc_global_extensions = [
       \ 'coc-marketplace',
-      \ 'coc-rust-analyzer',
+      \ 'coc-rls',
       \ 'coc-actions',
       \ 'coc-tsserver',
       \ 'coc-fish',
       \ 'coc-yaml',
+      \ 'coc-json',
       \ ]
 
 " }}}
@@ -57,12 +58,12 @@ Plug 'morhetz/gruvbox'
 
 " TODO: Do we need this?
 Plug 'vim-syntastic/syntastic'
-
-Plug '/usr/local/opt/fzf'
+Plug '/usr/share/doc/fzf/examples'
 Plug 'junegunn/fzf.vim'
 Plug 'blerins/flattown'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'junegunn/vim-easy-align'
+Plug 'dhruvasagar/vim-zoom'
 
 " }}}
 
@@ -72,7 +73,7 @@ call plug#end()
 
 " Basic Configuration {{{
 
-colorscheme minimal
+colorscheme gruvbox
 
 set hidden
 set et sw=2 ts=2
@@ -163,7 +164,8 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 
 " Run things
 
-autocmd FileType rust nmap <leader>R :CocCommand rust-analyzer.run<cr>
+" rust-analyzer crashes
+" autocmd FileType rust nmap <leader>R :CocCommand rust-analyzer.run<cr>
 
 " }}}
 
@@ -193,6 +195,7 @@ autocmd User CocJumpPlaceholder call
       \ CocActionAsync('showSignatureHelp')
 
 autocmd BufWritePre,FileWritePre *.rs Format
+autocmd FileType rust set foldmethod=syntax
 
 " }}}
 
