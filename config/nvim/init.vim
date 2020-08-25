@@ -69,7 +69,7 @@ Plug 'morhetz/gruvbox'
 " Miscellaneous {{{
 
 " TODO: Do we need this?
-Plug 'vim-syntastic/syntastic'
+" Plug 'vim-syntastic/syntastic'
 
 " TODO: platform differences
 " Plug '/usr/share/doc/fzf/examples'
@@ -89,6 +89,8 @@ call plug#end()
 
 " Basic Configuration {{{
 
+" colorscheme minimal
+set bg=dark
 colorscheme gruvbox
 
 set hidden
