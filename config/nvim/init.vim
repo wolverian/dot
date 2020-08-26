@@ -2,9 +2,12 @@
 
 " vi:foldmethod=marker
 
+set shell=/bin/zsh
+let $SHELL = '/bin/zsh'
+
 " Leader {{{
 
-let mapleader = ","
+let mapleader = " "
 let maplocalleader = ";"
 
 " }}}
@@ -25,6 +28,7 @@ let g:coc_global_extensions = [
       \ 'coc-fish',
       \ 'coc-yaml',
       \ 'coc-json',
+      \ 'coc-fzf-preview',
       \ ]
 
 " }}}
@@ -35,6 +39,14 @@ Plug 'dag/vim-fish'
 " Plug 'edwinb/idris2-vim'
 Plug 'idris-hackers/idris-vim'
 Plug 'derekelkins/agda-vim'
+Plug 'cespare/vim-toml'
+Plug 'hashivim/vim-terraform'
+
+" Rust {{{
+
+Plug 'mhinz/vim-crates'
+
+" }}}
 
 " Haskell {{{
 
@@ -58,7 +70,11 @@ Plug 'morhetz/gruvbox'
 
 " TODO: Do we need this?
 Plug 'vim-syntastic/syntastic'
-Plug '/usr/share/doc/fzf/examples'
+
+" TODO: platform differences
+" Plug '/usr/share/doc/fzf/examples'
+Plug '/usr/local/opt/fzf'
+
 Plug 'junegunn/fzf.vim'
 Plug 'blerins/flattown'
 Plug 'terryma/vim-multiple-cursors'
@@ -80,13 +96,13 @@ set et sw=2 ts=2
 set cmdheight=2
 set updatetime=300
 set shortmess+=c
-set laststatus=0
+set laststatus=2
+set statusline=%f
 
 " }}}
 
 " Common shortcuts {{{
 
-nmap <leader>f :GFiles<CR>
 nmap <leader><leader> :b#<cr>
 nmap <leader>v <c-w>v<c-w>l:b#<cr>
 nmap <leader>t :terminal<cr>
@@ -109,6 +125,34 @@ endfunction
 
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
+" Use tab for trigger completion with characters ahead and navigate.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+if exists('*complete_info')
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
+
 " }}}
 
 " Diagnostics {{{
@@ -126,6 +170,30 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 "}}}
+
+" Fuzzy finding {{{
+
+nmap <Leader>f [fzf-p]
+xmap <Leader>f [fzf-p]
+
+nnoremap <silent> [fzf-p]f     :<C-u>FZF<CR>
+nnoremap <silent> [fzf-p]p     :<C-u>CocCommand fzf-preview.FromResources project_mru git<CR>
+nnoremap <silent> [fzf-p]gs    :<C-u>CocCommand fzf-preview.GitStatus<CR>
+nnoremap <silent> [fzf-p]ga    :<C-u>CocCommand fzf-preview.GitActions<CR>
+nnoremap <silent> [fzf-p]b     :<C-u>CocCommand fzf-preview.Buffers<CR>
+nnoremap <silent> [fzf-p]B     :<C-u>CocCommand fzf-preview.AllBuffers<CR>
+nnoremap <silent> [fzf-p]o     :<C-u>CocCommand fzf-preview.FromResources buffer project_mru<CR>
+nnoremap <silent> [fzf-p]<C-o> :<C-u>CocCommand fzf-preview.Jumps<CR>
+nnoremap <silent> [fzf-p]g;    :<C-u>CocCommand fzf-preview.Changes<CR>
+nnoremap <silent> [fzf-p]/     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
+nnoremap <silent> [fzf-p]*     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'<C-r>=expand('<cword>')<CR>"<CR>
+nnoremap          [fzf-p]gr    :<C-u>CocCommand fzf-preview.ProjectGrep<Space>
+xnoremap          [fzf-p]gr    "sy:CocCommand   fzf-preview.ProjectGrep<Space>-F<Space>"<C-r>=substitute(substitute(@s, '\n', '', 'g'), '/', '\\/', 'g')<CR>"
+nnoremap <silent> [fzf-p]t     :<C-u>CocCommand fzf-preview.BufferTags<CR>
+nnoremap <silent> [fzf-p]q     :<C-u>CocCommand fzf-preview.QuickFix<CR>
+nnoremap <silent> [fzf-p]l     :<C-u>CocCommand fzf-preview.LocationList<CR>
+
+" }}}
 
 " Symbol Renaming {{{
 
