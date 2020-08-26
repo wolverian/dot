@@ -29,5 +29,7 @@ compinit
 
 prompt='%1~%% '
 
-. .bash_aliases
+if [[ -e .bash_aliases ]]; then
+  . .bash_aliases
+fi
 
