@@ -89,9 +89,10 @@ call plug#end()
 
 " Basic Configuration {{{
 
-" colorscheme minimal
-set bg=dark
-colorscheme gruvbox
+set bg=light
+colorscheme minimal
+" set bg=dark
+" colorscheme gruvbox
 
 set hidden
 set et sw=2 ts=2
@@ -100,6 +101,7 @@ set updatetime=300
 set shortmess+=c
 set laststatus=2
 set statusline=%f
+set fillchars+=fold:\ 
 
 " }}}
 
