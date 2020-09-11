@@ -2,9 +2,6 @@
 
 " vi:foldmethod=marker
 
-set shell=/bin/zsh
-let $SHELL = '/bin/zsh'
-
 " Leader {{{
 
 let mapleader = " "
@@ -22,7 +19,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 let g:coc_global_extensions = [
       \ 'coc-marketplace',
-      \ 'coc-rls',
+      \ 'coc-rust-analyzer',
       \ 'coc-actions',
       \ 'coc-tsserver',
       \ 'coc-fish',
@@ -36,8 +33,6 @@ let g:coc_global_extensions = [
 " Language support {{{
 
 Plug 'dag/vim-fish'
-" Plug 'edwinb/idris2-vim'
-Plug 'idris-hackers/idris-vim'
 Plug 'derekelkins/agda-vim'
 Plug 'cespare/vim-toml'
 Plug 'hashivim/vim-terraform'
@@ -52,7 +47,6 @@ Plug 'mhinz/vim-crates'
 
 " TODO: Use haskell-ide-engine instead: <https://github.com/haskell/haskell-language-server>
 Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
-
 Plug 'sdiehl/vim-ormolu'
 
 " }}}
@@ -68,18 +62,16 @@ Plug 'morhetz/gruvbox'
 
 " Miscellaneous {{{
 
-" TODO: Do we need this?
-" Plug 'vim-syntastic/syntastic'
-
 " TODO: platform differences
-" Plug '/usr/share/doc/fzf/examples'
-Plug '/usr/local/opt/fzf'
+Plug '/usr/share/doc/fzf/examples'
+" Plug '/usr/local/opt/fzf'
 
 Plug 'junegunn/fzf.vim'
 Plug 'blerins/flattown'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'junegunn/vim-easy-align'
 Plug 'dhruvasagar/vim-zoom'
+" TODO: clap
 
 " }}}
 
@@ -106,6 +98,9 @@ set fillchars+=fold:\
 " }}}
 
 " Common shortcuts {{{
+
+nmap <cr> :Clap files<cr>
+nmap <bs> :Clap coc_symbols<cr>
 
 nmap <leader><leader> :b#<cr>
 nmap <leader>v <c-w>v<c-w>l:b#<cr>
@@ -175,31 +170,7 @@ nmap <silent> gr <Plug>(coc-references)
 
 "}}}
 
-" Fuzzy finding {{{
-
-nmap <Leader>f [fzf-p]
-xmap <Leader>f [fzf-p]
-
-nnoremap <silent> [fzf-p]f     :<C-u>FZF<CR>
-nnoremap <silent> [fzf-p]p     :<C-u>CocCommand fzf-preview.FromResources project_mru git<CR>
-nnoremap <silent> [fzf-p]gs    :<C-u>CocCommand fzf-preview.GitStatus<CR>
-nnoremap <silent> [fzf-p]ga    :<C-u>CocCommand fzf-preview.GitActions<CR>
-nnoremap <silent> [fzf-p]b     :<C-u>CocCommand fzf-preview.Buffers<CR>
-nnoremap <silent> [fzf-p]B     :<C-u>CocCommand fzf-preview.AllBuffers<CR>
-nnoremap <silent> [fzf-p]o     :<C-u>CocCommand fzf-preview.FromResources buffer project_mru<CR>
-nnoremap <silent> [fzf-p]<C-o> :<C-u>CocCommand fzf-preview.Jumps<CR>
-nnoremap <silent> [fzf-p]g;    :<C-u>CocCommand fzf-preview.Changes<CR>
-nnoremap <silent> [fzf-p]/     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
-nnoremap <silent> [fzf-p]*     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'<C-r>=expand('<cword>')<CR>"<CR>
-nnoremap          [fzf-p]gr    :<C-u>CocCommand fzf-preview.ProjectGrep<Space>
-xnoremap          [fzf-p]gr    "sy:CocCommand   fzf-preview.ProjectGrep<Space>-F<Space>"<C-r>=substitute(substitute(@s, '\n', '', 'g'), '/', '\\/', 'g')<CR>"
-nnoremap <silent> [fzf-p]t     :<C-u>CocCommand fzf-preview.BufferTags<CR>
-nnoremap <silent> [fzf-p]q     :<C-u>CocCommand fzf-preview.QuickFix<CR>
-nnoremap <silent> [fzf-p]l     :<C-u>CocCommand fzf-preview.LocationList<CR>
-
-" }}}
-
-" Symbol Renaming {{{
+" Refactoring {{{
 
 nmap <leader>rn <Plug>(coc-rename)
 
@@ -237,7 +208,7 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " Run things
 
 " rust-analyzer crashes
-" autocmd FileType rust nmap <leader>R :CocCommand rust-analyzer.run<cr>
+autocmd FileType rust nmap <leader>R :CocCommand rust-analyzer.run<cr>
 
 " }}}
 
@@ -263,11 +234,9 @@ xmap <silent> <C-s> <Plug>(coc-range-select)
 
 " Miscellaneous {{{
 
-autocmd User CocJumpPlaceholder call
-      \ CocActionAsync('showSignatureHelp')
+autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 
 autocmd BufWritePre,FileWritePre *.rs Format
-autocmd FileType rust set foldmethod=syntax
 
 " }}}
 
