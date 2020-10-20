@@ -67,6 +67,11 @@ Plug 'sdiehl/vim-ormolu'
 
 Plug 'wolverian/minimal'
 Plug 'morhetz/gruvbox'
+Plug 'Canop/patine'
+Plug 'seesleestak/duo-mini'
+Plug 'fxn/vim-monochrome'
+Plug 'Lokaltog/vim-monotone'
+Plug '~/src/text'
 
 " }}}
 
@@ -81,7 +86,8 @@ Plug 'blerins/flattown'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'junegunn/vim-easy-align'
 Plug 'dhruvasagar/vim-zoom'
-" TODO: clap
+Plug 'liuchengxu/vim-clap'
+Plug 'vn-ki/coc-clap'
 
 " }}}
 
@@ -91,10 +97,21 @@ call plug#end()
 
 " Basic Configuration {{{
 
-set bg=light
-colorscheme minimal
-" set bg=dark
-" colorscheme gruvbox
+" Enable true color inside screen/tmux only, because blink.sh doesn't render
+" it correctly otherwise.
+if $TERM =~ "^screen"
+  set termguicolors
+  set bg=dark
+  let g:monotone_emphasize_comments=1
+  colorscheme monotone
+else
+  set notermguicolors
+  set bg=dark
+  colorscheme text
+endif
+
+" set bg=light
+" colorscheme minimal
 
 set hidden
 set et sw=2 ts=2
