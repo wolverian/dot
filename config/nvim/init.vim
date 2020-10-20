@@ -67,6 +67,7 @@ Plug 'sdiehl/vim-ormolu'
 
 Plug 'wolverian/minimal'
 Plug 'morhetz/gruvbox'
+Plug 'yorickpeterse/vim-paper'
 Plug 'Canop/patine'
 Plug 'seesleestak/duo-mini'
 Plug 'fxn/vim-monochrome'
@@ -99,16 +100,33 @@ call plug#end()
 
 " Enable true color inside screen/tmux only, because blink.sh doesn't render
 " it correctly otherwise.
-if $TERM =~ "^screen"
-  set termguicolors
+function! s:dark()
   set bg=dark
-  let g:monotone_emphasize_comments=1
-  colorscheme monotone
-else
-  set notermguicolors
-  set bg=dark
-  colorscheme text
-endif
+  if $TERM =~ "^screen"
+    set termguicolors
+    let g:monotone_emphasize_comments=1
+    colorscheme monotone
+  else
+    set notermguicolors
+    colorscheme text
+  endif
+endfunction
+
+function! s:light()
+  set bg=light
+  if $TERM =~ "^screen"
+    set termguicolors
+    colorscheme paper
+  else
+    set notermguicolors
+    colorscheme default
+  endif
+endfunction
+
+call s:dark()
+
+nnoremap <leader>tl :call <SID>light()<cr>
+nnoremap <leader>td :call <SID>dark()<cr>
 
 " set bg=light
 " colorscheme minimal
