@@ -108,7 +108,7 @@ function! s:dark()
     colorscheme monotone
   else
     set notermguicolors
-    colorscheme text
+    colorscheme flattown
   endif
 endfunction
 
