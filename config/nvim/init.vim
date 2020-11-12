@@ -119,7 +119,7 @@ function! s:light()
     colorscheme paper
   else
     set notermguicolors
-    colorscheme default
+    colorscheme minimal
   endif
 endfunction
 
