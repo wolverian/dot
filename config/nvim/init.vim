@@ -123,7 +123,11 @@ function! s:light()
   endif
 endfunction
 
-call s:dark()
+if strftime("%H") < 18
+  call s:light()
+else
+  call s:dark()
+endif
 
 nnoremap <leader>tl :call <SID>light()<cr>
 nnoremap <leader>td :call <SID>dark()<cr>
